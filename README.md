@@ -26,13 +26,14 @@ $ python package.py runserver 8080
 $ python package.py shell
 ```
 
-### 데이터베이스 설치(MySQL) [[참고]](https://docs.djangoproject.com/ko/2.0/ref/databases/)
+### 데이터베이스 설치(MySQL)
+[Django 문서/topics/templates](https://docs.djangoproject.com/ko/2.0/ref/databases/)
 * mysqlclient(MySQL DB API Driver) 설치
 ```bash
 $ sudo apt-get install mysql-server mysql-client libmysqlclient-dev
 $ sudo pip3 install mysqlclient
 ```
-* settings.py 설정
+* [settings.py](./myhome/settings.py) 설정
 ```python
 # settings.py
 DATABASES = {
@@ -135,4 +136,54 @@ return render(request, 'path/templateName', args_dict(optional))
     - generic.DetailView: 특정 개체 유형에 대한 세부 정보 페이지 표시
 
 ### test
+* 참고
+    - [Django 문서/tipics/testing](https://docs.djangoproject.com/ko/2.0/topics/testing/)
+    - [wiki - Test-driven development](https://en.wikipedia.org/wiki/Test-driven_development)
+
+* [test.py](./polls/tests.py) 수정
+```python
+from django.test import TestCase
+
+class ClassName(TestCase):
+    def func(self):
+        pass
+```
+TestCase 클래스를 상속받은 새로운 클래스에 테스트용 함수를 작성한다.
+
+* 테스트 실행
+```bash
+python manage.py test [appName]
+```
+
+### 정적 파일 사용
+* CSS
+    - [style.css](./polls/static/polls/style.css) 작성
+    - 템플릿에 CSS 추가
+    ```html
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'appName/style.css' %}" />
+    ```
+* image
+    - [background.jpg]를 ./appName/static/appName/ 에 추가
+    - style.css에 항목 추가
+    ```css
+    body {
+        background: white url("images/background.gif") no-repeat;
+    }
+    ```
+
+### 관리자 사이트 커스터마이징
+* 참고
+    - [Django 문서/intro/tutorial07](https://docs.djangoproject.com/ko/2.0/intro/tutorial07/)
+    - [Django 문서/ref/contrib/admin](https://docs.djangoproject.com/ko/2.0/ref/contrib/admin/)
+* 폼 커스터마이징
+    - [admin.py](./polls/admin.py) 수정
+* 템플릿 커스터마이징
+    - [settings.py](./myhome/settings.py)의 TEMPLATES.'DIRS' 수정
+    - 장고 설치 위치 확인
+    ```bash
+    $ python -c "import django; print(django.__path__):
+    ```
+    - Django 자체 소스코드(django/contrib/amdin/templates)를 [project 내](./templates)에 복사
+    - [base_site.html](./templates/admin/base_site.html) 수정
 
